@@ -1,0 +1,54 @@
+<ion-card>
+    <ion-card-header>{{assignment}}</ion-card-header>
+    <ion-card-content>
+       <iframe [src]="url" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
+       <ion-item>
+         <ion-avatar item-left>
+           <img src="images/femaleTeacher.png">
+         </ion-avatar>
+         <div item-right>
+              <ion-icon *ngIf="teacherRating>=1" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+              <ion-icon *ngIf="teacherRating>=2" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+              <ion-icon *ngIf="teacherRating>=3" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+              <ion-icon *ngIf="teacherRating>=4" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+              <ion-icon *ngIf="teacherRating>=5" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+              <ion-icon *ngIf="teacherRating%1!=0" name="star-half" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+              <ion-icon *ngIf="teacherRating==0" name="star-outline"></ion-icon>
+              <ion-icon *ngIf="teacherRating<=1" name="star-outline"></ion-icon>
+              <ion-icon *ngIf="teacherRating<=2" name="star-outline"></ion-icon>
+              <ion-icon *ngIf="teacherRating<=3" name="star-outline"></ion-icon>
+              <ion-icon *ngIf="teacherRating<=4" name="star-outline"></ion-icon>
+           </div>
+        </ion-item>
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="images/peers.png">
+          </ion-avatar>
+          <div item-right>
+               <ion-icon *ngIf="cumulative_rating>=1" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating>=2" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating>=3" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating>=4" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating>=5" name="star" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating%1!=0" name="star-half" [ngStyle]="{'color': '#ffd700'}"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating==0" name="star-outline"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating<=1" name="star-outline"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating<=2" name="star-outline"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating<=3" name="star-outline"></ion-icon>
+               <ion-icon *ngIf="cumulative_rating<=4" name="star-outline"></ion-icon>
+            </div>
+         </ion-item>
+        <!-- <ion-item>
+          <ion-label stacked>Feedback Comment</ion-label>
+          <ion-textarea disabled=true [(ngModel)]="teacherFeedback"></ion-textarea>
+        </ion-item> -->
+        <div padding style="text-align: center;">
+        <ion-item>
+           <button outline block small (click)="viewRatings()">
+               <ion-icon name="eye"></ion-icon>
+               Ratings Detail
+            </button>
+         </ion-item>
+       </div>
+    </ion-card-content>
+</ion-card>

@@ -1,0 +1,54 @@
+<ion-navbar *navbar>
+  <ion-title>Upload Assignment Video</ion-title>
+</ion-navbar>
+
+<ion-content padding class="upload-video" style="text-align: center;">
+    <div *ngIf="!loggedIn">
+      <button danger (click)="login()">Authorize to Upload Assignment</button>
+    </div>
+
+    <div *ngIf="loggedIn">
+      <ion-list>
+        <ion-item>
+          <ion-label floating>Title</ion-label>
+          <ion-input type="text" [value]="videoTitle" ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Description</ion-label>
+          <ion-textarea [(ngModel)]="videoDesc" ></ion-textarea>
+        </ion-item>
+        <!--
+        https://support.google.com/youtube/answer/157177?hl=en
+        <ion-item>
+         <ion-label>Privacy Status</ion-label>
+         <ion-select [(ngModel)]="videoPrivacy">
+           <ion-option value="public">public</ion-option>
+           <ion-option value="unlisted">unlisted</ion-option>
+           <ion-option value="private">private</ion-option>
+         </ion-select>
+       </ion-item>-->
+
+       <ion-item>
+         <input type="file" id="file" (input)="filesAdded($event, value)" accept="video/*">
+         <button item-right id="button" (click)="handleUploadClicked()">Upload</button>
+       </ion-item>
+      </ion-list>
+
+      <div>
+        <div *ngIf="duringUpload">
+          <p><span id="percent-transferred"></span>% done (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p>
+          <progress id="upload-progress" max="1" value="0"></progress>
+        </div>
+
+        <div *ngIf="postUpload">
+          <p>Uploaded video with id <span id="video-id"></span> :)</p>
+          <!--. Polling for status...</p>
+          <ul id="post-upload-status"></ul>
+          <div id="player"></div>-->
+        </div>
+        <p id="disclaimer">By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at <a href="http://www.youtube.com/t/terms" target="_blank">http://www.youtube.com/t/terms</a></p>
+    </div>
+  </div>
+
+</ion-content>

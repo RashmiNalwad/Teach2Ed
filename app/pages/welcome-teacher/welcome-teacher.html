@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Welcome {{userInfo.fname}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="teacher-home card-background-page">
+  <ion-card>
+      <ion-item>
+          <ion-avatar item-left>
+            <img src="http://cdn2.iconfinder.com/data/icons/professions/512/student_graduate_boy_profile-512.png">
+          </ion-avatar>
+          <h2>{{userInfo.fname}} {{userInfo.mname}} {{userInfo.lname}}</h2>
+          <button item-right center round (click)="logout()">
+            <ion-icon name="log-out"></ion-icon>
+          </button>
+      </ion-item>
+    </ion-card>
+    <div padding style="text-align: center;">
+    <ion-row baseline>
+      <ion-col width-33>
+      Class Group :
+      </ion-col>
+      <ion-col width-33>
+        <button block small outline (click)="selectNewClass()">
+          <ion-icon name="basket"></ion-icon>
+          Select
+        </button>
+      </ion-col>
+      <ion-col width-33>
+        <button block small outline (click)="addNewClass()">
+          <ion-icon name="create"></ion-icon>
+          Create
+        </button>
+      </ion-col>
+    </ion-row>
+
+    <p>
+    Existing Class Groups
+    </p>
+    <ion-grid>
+    <ion-row wrap><!--responsive-sm-->
+      <ion-col center width-50 *ngFor="let className of myClasses">
+        <ion-card>
+
+        <img [src]="getClassImg(className)"/>
+        <ion-card-content>
+          {{getClassName(className)}}
+          <button block small outline  (click)="goTo_Class(className)">{{getSubject(className)}}</button>
+        </ion-card-content>
+        <ion-item>
+          <ion-icon ios="ios-people" md="md-people" item-left></ion-icon>
+          <ion-badge item-right>{{getStudentCount(className)}}</ion-badge>
+        </ion-item>
+    </ion-card>
+  </ion-col>
+</ion-row>
+</ion-grid>
+
+    <!--<button block outline *ngFor="let className of myClasses" (click)="goTo_Class(className)">
+      <ion-item>
+      {{className}}
+      </ion-item>
+      <ion-item>
+        <ion-icon ios="ios-people" md="md-people" item-left></ion-icon>
+        Registered
+        <ion-badge item-right>{{getStudentCount(className)}}</ion-badge>
+      </ion-item>
+    </button>-->
+    </div>
+</ion-content>

@@ -1,0 +1,41 @@
+<ion-card>
+  <ion-item>
+      <ion-avatar item-left>
+        <img [src]="imgSrc">
+      </ion-avatar>
+      <h2>{{fname}} {{lname}}</h2>
+      <p>{{submitted_on}}</p>
+  </ion-item>
+  <!--<iframe [src]="response.attachmentUrl" frameborder="0" style="overflow:hidden;height:100%;width:100%" height="100%" width="100%" allowfullscreen></iframe>-->
+  <!--<iframe [src]="response.attachmentUrl" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>-->
+  <iframe [src]="url" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
+  <ion-item>
+        <ion-label>Rating</ion-label>
+        <ion-select [disabled]="reviewed" [(ngModel)]='response.teacher_feedback["Rating on Scale of 5"]'>
+          <ion-option value=0 checked="true">0</ion-option>
+          <ion-option value=1>1</ion-option>
+          <ion-option value=2>2</ion-option>
+          <ion-option value=3>3</ion-option>
+          <ion-option value=4>4</ion-option>
+          <ion-option value=5>5</ion-option>
+          <!-- <ion-option value=6>6</ion-option>
+          <ion-option value=7>7</ion-option>
+          <ion-option value=8>8</ion-option>
+          <ion-option value=9>9</ion-option>
+          <ion-option value=10>10</ion-option> -->
+        </ion-select>
+  </ion-item>
+  <!--
+  <ion-item>
+    <ion-range min="1" max="10" step="1" snaps="true" [(ngModel)]='response.teacher_feedback["Rating on Scale of 10"]'>
+      <ion-icon range-left small name="thermometer"></ion-icon>
+      <ion-icon range-right name="thermometer"></ion-icon>
+    </ion-range>
+  </ion-item>-->
+  <ion-item>
+    <ion-label stacked>Feedback Comment</ion-label>
+    <ion-textarea [disabled]="reviewed" [(ngModel)]="response.teacher_feedback.Comment"></ion-textarea>
+  </ion-item>
+  <button *ngIf="!reviewed" style="left: 40%;" small  (click)="submitReview()">Submit</button>
+</ion-card>
+<br>

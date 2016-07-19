@@ -1,0 +1,34 @@
+<ion-card>
+   <ion-card-header>{{assignment}}</ion-card-header>
+   <ion-card-content>
+     <a ion-item (click)="openModal({studentNum: 0})">
+       <button primary small>
+         <ion-icon name="person"></ion-icon>
+         <div>Student 1</div>
+       </button>
+       <ion-icon name="create"></ion-icon>
+     </a>
+     <a ion-item (click)="openModal({studentNum: 1})">
+       <button primary small>
+         <ion-icon name="person"></ion-icon>
+         <div>Student 2</div>
+       </button>
+       <ion-icon name="done-all" [ngStyle]="{'color': '#00cc66'}"></ion-icon>
+     </a>
+     <a ion-item (click)="openModal({studentNum: 2})">
+       <button primary small>
+         <ion-icon name="person"></ion-icon>
+         <div>Student 3</div>
+       </button>
+       <ion-icon name="create"></ion-icon>
+     </a>
+   </ion-card-content>
+   <ion-row>
+      <ion-col>
+        <button danger clear small>
+          <ion-icon name="calendar"></ion-icon>
+          <div>Review by: 20th July</div>
+        </button>
+      </ion-col>
+  </ion-row>
+</ion-card>

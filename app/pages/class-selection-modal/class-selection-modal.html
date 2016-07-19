@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Class Group Selection</ion-title>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        <span primary showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #formData="ngForm" (ngSubmit)="onSubmit(formData.value)">
+    <ion-item>
+      <ion-label floating>Class</ion-label>
+      <ion-select [(ngModel)]="classGrade" ngControl="classGrade" (ngModelChange)="classTapped(classGrade)">
+        <ion-option *ngFor="let className of classes" [value]="className" >{{className}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Specialization</ion-label>
+      <ion-select [(ngModel)]="specialization" ngControl="specialization" (ngModelChange)="splTapped(specialization)">
+        <ion-option *ngFor="let spl of specializations" [value]="spl" >{{spl}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Subjects</ion-label>
+      <ion-select [(ngModel)]="selectedSubject" ngControl="selectedSubject"><!-- multiple="true"-->
+        <ion-option *ngFor="let subject of subjects" [value]="subject" >{{subject}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <div padding style="text-align: center;">
+    <button secondary type="submit">
+      <ion-icon ios="ios-archive" md="md-archive"></ion-icon>
+      Save
+    </button>
+  </div>
+  </form>
+</ion-content>

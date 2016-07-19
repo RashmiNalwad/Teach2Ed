@@ -1,0 +1,107 @@
+<!--
+Generated template for the RegisterPage page.
+
+See http://ionicframework.com/docs/v2/components/#navigation for more info on
+Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>User Registration</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="register">
+  <ion-card>
+    <!-- <ion-card-header dark>
+      Registration Form
+    </ion-card-header> -->
+    <form #formData="ngForm" (ngSubmit)="onSubmit(formData.value)">
+      <ion-list>
+        <ion-row>
+          <ion-col>
+            <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+              <ion-label floating>Register as *:</ion-label>
+              <ion-select  [(ngModel)]="type" ngControl="type" required>
+                <ion-option value="student" checked="true">Student</ion-option>
+                <ion-option value="teacher">Teacher</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+              <ion-label floating>Gender *:</ion-label>
+              <ion-select [(ngModel)]="gender" ngControl="gender" required>
+                <ion-option value="MALE" checked="true">Male</ion-option>
+                <ion-option value="FEMALE">Female</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+              <ion-label floating>First Name *:</ion-label>
+              <ion-input type="text"  ngControl="fname" required></ion-input>
+            </ion-item>
+          </ion-col>
+          <!-- <ion-col>
+            <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+              <ion-label floating>Middle Name:</ion-label>
+              <ion-input type="text" ngControl="mname"></ion-input>
+            </ion-item>
+          </ion-col> -->
+          <ion-col>
+            <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+              <ion-label floating>Last Name *:</ion-label>
+              <ion-input type="text" ngControl="lname" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+          <ion-label floating>User Id *:</ion-label>
+          <ion-input  type="email"  ngControl="userId" required></ion-input>
+        </ion-item>
+        <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+          <ion-label floating>User Password *:</ion-label>
+          <ion-input type="password"  ngControl="userPassword" required></ion-input>
+        </ion-item >
+
+        <div *ngIf="type=='student'">
+          <ion-row>
+            <ion-col>
+          <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+            <ion-label floating>Class</ion-label>
+            <ion-select [(ngModel)]="classGrade" ngControl="classGrade" (ngModelChange)="classTapped(classGrade)">
+              <ion-option *ngFor="let className of classes" [value]="className" >{{className}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+            <ion-col>
+          <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+            <ion-label floating>Specialization</ion-label>
+            <ion-select [(ngModel)]="specialization" ngControl="specialization" (ngModelChange)="splTapped(specialization)">
+              <ion-option *ngFor="let spl of specializations" [value]="spl" >{{spl}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+            <ion-col>
+          <ion-item class="item item-input ng-pristine ng-valid ng-touched">
+            <ion-label floating>Subjects</ion-label>
+            <ion-select [(ngModel)]="selectedSubjects" ngControl="selectedSubjects" multiple="true">
+              <ion-option *ngFor="let subject of subjects" [value]="subject" >{{subject}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+        </div>
+        <div padding style="text-align: center;">
+          <button type="submit" round >Save</button>
+        </div>
+      </ion-list>
+    </form>
+  </ion-card>
+</ion-content>

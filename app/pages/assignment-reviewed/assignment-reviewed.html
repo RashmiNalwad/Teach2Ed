@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+  <ion-title>{{title}}</ion-title>
+  <ion-title>{{chapter}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="assignment-reviewed">
+    <student-assignment *ngFor="let student of teacher_reviewed"
+                        [student_id]="student"
+                        [response]="responses[student]"
+                        [reviewed]=true>
+    </student-assignment>
+</ion-content>
