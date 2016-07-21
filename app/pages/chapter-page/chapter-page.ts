@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {Loading, NavController, NavParams, Alert} from 'ionic-angular';
+import {Loading, NavController, NavParams, Alert, Modal} from 'ionic-angular';
 import {Data} from '../../providers/data/data';
 import {Lib} from '../../providers/lib/lib';
 import {AssignmentToReviewPage} from '../assignment-to-review/assignment-to-review';
 import {AssignmentReviewedPage} from '../assignment-reviewed/assignment-reviewed';
+import {AssignDescriptionModalPage} from '../assign-description-modal/assign-description-modal';
 
 import {UploadVideoPage} from '../upload-video/upload-video';//time being
 
@@ -38,6 +39,7 @@ export class ChapterPage {
             this.assignment_dict[assignment]["max_response_duration_min"] = 0;
             this.assignment_dict[assignment]["assigned_on"] = "default";
             this.assignment_dict[assignment]["soft_deadline_due"] = "default";
+            this.assignment_dict[assignment]["review_peer_deadline_due"] = "default";
             this.assignment_dict[assignment]["hard_deadline_due"] = "default";
             this.assignment_dict[assignment]["teacher_reviewed"] = [];
             this.assignment_dict[assignment]["no_of_assignments_reviewed"] = 0;
@@ -57,6 +59,7 @@ export class ChapterPage {
                     this.assignment_dict[assignment]["max_response_duration_min"] = 0;
                     this.assignment_dict[assignment]["assigned_on"] = "default";
                     this.assignment_dict[assignment]["soft_deadline_due"] = "default";
+                    this.assignment_dict[assignment]["review_peer_deadline_due"] = "default";
                     this.assignment_dict[assignment]["hard_deadline_due"] = "default";
                     this.assignment_dict[assignment]["teacher_reviewed"] = [];
                     this.assignment_dict[assignment]["no_of_assignments_reviewed"] = 0;
@@ -77,6 +80,7 @@ export class ChapterPage {
                         this.assignment_dict[title]["max_response_duration_min"] = result["max_response_duration_min"];
                         this.assignment_dict[title]["assigned_on"] = result["assigned_on"];
                         this.assignment_dict[title]["soft_deadline_due"] = result["soft_deadline_due"];
+                        this.assignment_dict[title]["review_peer_deadline_due"] = result["review_peer_deadline_due"];
                         this.assignment_dict[title]["hard_deadline_due"] = result["hard_deadline_due"];
                         this.assignment_dict[title]["teacher_reviewed"] = result["teacher_reviewed"];
                         this.assignment_dict[title]["teacher_yet_to_review"] = result["teacher_yet_to_review"];
@@ -87,30 +91,21 @@ export class ChapterPage {
                 });
             }
         });
-
-        /*for(let assignment of this.assignments){
-          this.dataService.getAssignmentInfo(assignment).then((assignment_info) => {
-              if (assignment_info) {
-                  this.assignment_dict[assignment] = {};
-                  this.assignment_dict[assignment] ["description"] = assignment_info["description"];
-                  this.assignment_dict[assignment] ["max_response_duration_min"] = assignment_info["max_response_duration_min"];
-                  this.assignment_dict[assignment] ["assigned_on"] = assignment_info["assigned_on"];
-                  this.assignment_dict[assignment] ["soft_deadline_due"] = assignment_info["soft_deadline_due"];
-                  this.assignment_dict[assignment] ["hard_deadline_due"] = assignment_info["hard_deadline_due"];
-                  this.assignment_dict[assignment] ["teacher_reviewed"] = assignment_info["teacher_reviewed"];
-                  this.assignment_dict[assignment] ["teacher_yet_to_review"] = assignment_info["teacher_yet_to_review"];
-                  this.assignment_dict[assignment] ["no_of_assignments_reviewed"] = assignment_info["teacher_reviewed"].length;
-                  this.assignment_dict[assignment] ["no_of_assignments_to_review"] = assignment_info["teacher_yet_to_review"].length;
-                  //console.log(this.assignment_dict);
-              }
-          }).catch(function(exception){
-            console.log(exception);
-          });
-      }*/
-
     }
-    viewDescription() {
+    editDescription(assignment) {
+        let modal = Modal.create(AssignDescriptionModalPage,
+            {
+                description: this.assignment_dict[assignment]["description"],
+                assignment: assignment,
+                max_response_time: this.assignment_dict[assignment]["max_response_duration_min"],
+                assigned_on: this.assignment_dict[assignment]["assigned_on"],
+                edit: true
+            });
+        this.nav.present(modal);
+    }
 
+    delAssignment(assignment){
+      //assignment, obj.className, obj.chapter
     }
 
     addAssignment() {
@@ -121,6 +116,7 @@ export class ChapterPage {
                 { name: 'description', placeholder: 'Description' },
                 { name: 'duration', placeholder: 'Duration in minutes', type: 'number' },
                 { name: 'softDeadline', placeholder: 'No of days for Soft deadline', type: 'number' },
+                { name: 'reviewPeerDeadline', placeholder: '# days : Peer Review deadline', type: 'number' },
                 { name: 'hardDeadline', placeholder: 'No of days for Hard deadline', type: 'number' },
             ],
             buttons: [
@@ -137,9 +133,11 @@ export class ChapterPage {
                         var obj = this;
                         var assignedOnDate = new Date();
                         var softDeadlineDate = new Date(assignedOnDate.getFullYear(), assignedOnDate.getMonth(), assignedOnDate.getDate() + parseInt(data.softDeadline) + 1); //+1 for 0-based index
+                        var reviewPeerDeadlineDate = new Date(assignedOnDate.getFullYear(), assignedOnDate.getMonth(), assignedOnDate.getDate() + parseInt(data.reviewPeerDeadline) + 1); //+1 for 0-based index
                         var hardDeadlineDate = new Date(assignedOnDate.getFullYear(), assignedOnDate.getMonth(), assignedOnDate.getDate() + parseInt(data.hardDeadline) + 1);
                         var assignedOnDateString = assignedOnDate.toISOString();
                         var softDeadlineDateString = softDeadlineDate.toISOString();
+                        var reviewPeerDeadlineDateString = reviewPeerDeadlineDate.toISOString();
                         var hardDeadlineDateString = hardDeadlineDate.toISOString();
                         obj.dataService.addAssignment(assignment, obj.className, obj.chapter, data.description, data.duration, assignedOnDateString, softDeadlineDateString, hardDeadlineDateString).then(function(response) {
                             if (response["ok"] == true) {
@@ -149,6 +147,7 @@ export class ChapterPage {
                                 obj.assignment_dict[assignment]["max_response_duration_min"] = data.duration;
                                 obj.assignment_dict[assignment]["assigned_on"] = assignedOnDateString;
                                 obj.assignment_dict[assignment]["soft_deadline_due"] = softDeadlineDateString;
+                                obj.assignment_dict[assignment]["review_peer_deadline_due"] = reviewPeerDeadlineDateString;
                                 obj.assignment_dict[assignment]["hard_deadline_due"] = hardDeadlineDateString;
                                 obj.assignment_dict[assignment]["teacher_reviewed"] = [];
                                 obj.assignment_dict[assignment]["no_of_assignments_reviewed"] = 0;
@@ -168,12 +167,15 @@ export class ChapterPage {
 
     deadlineUpdate(assignment) {
         var obj = this;
-        this.dataService.deadlineUpdate(assignment, this.assignment_dict[assignment]["soft_deadline_due"], this.assignment_dict[assignment]["hard_deadline_due"]).then(function(response) {
-            if (response["ok"] != true) {
-                let toastmsg = obj.lib.showToastMsgWithCloseButton("Unable to update deadline !!! ");
-                obj.nav.present(toastmsg);
-            }
-        });
+        this.dataService.deadlineUpdate(assignment,
+            this.assignment_dict[assignment]["soft_deadline_due"],
+            this.assignment_dict[assignment]["review_peer_deadline_due"],
+            this.assignment_dict[assignment]["hard_deadline_due"]).then(function(response) {
+                if (response["ok"] != true) {
+                    let toastmsg = obj.lib.showToastMsgWithCloseButton("Unable to update deadline !!! ");
+                    obj.nav.present(toastmsg);
+                }
+            });
     }
 
     reviewAssignment(event, assignmentTitle) {

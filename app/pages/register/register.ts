@@ -92,7 +92,7 @@ export class RegisterPage {
                     }]
                 });
                 this.nav.present(alert);
-                //this.nav.setRoot(HomePage);
+                this.nav.setRoot(LoginPage);
             } else {
                 let alert = Alert.create({
                     title: 'Register confirmation!',

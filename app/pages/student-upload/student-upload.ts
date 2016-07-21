@@ -1,15 +1,18 @@
-import {Page, Alert, Toast} from 'ionic-angular';
+import {Page, Alert, Toast, Loading} from 'ionic-angular';
 import {Data} from '../../providers/data/data';
 import {Lib} from '../../providers/lib/lib';
 import {Component} from '@angular/core';
 import {Modal, Platform, NavController, NavParams, ViewController} from 'ionic-angular';
 import {StudentCompletedPage} from '../student-completed/student-completed';
 import {StudentReviewPage} from '../student-review/student-review';
+import {StudentResubmitPage} from '../student-resubmit/student-resubmit';
 import { SafeResourceUrl, DomSanitizationService } from '@angular/platform-browser';
+import {AssignDescriptionModalPage} from '../assign-description-modal/assign-description-modal';
+import {UploadVideoPage} from '../upload-video/upload-video';
 
 @Component({
     templateUrl: 'build/pages/student-upload/student-upload.html',
-    directives: [StudentCompletedPage, StudentReviewPage]
+    directives: [StudentCompletedPage, StudentReviewPage, StudentResubmitPage]
 })
 
 export class StudentUploadPage {
@@ -27,6 +30,9 @@ export class StudentUploadPage {
     yetToUpload_assignments = [];
     soft_deadline_expired_assignments = [];
     safe_submit_assignments = [];
+
+    loading: any;
+
     constructor(public nav: NavController, navParams: NavParams,
         private dataService: Data, private lib: Lib, private sanitizer: DomSanitizationService) {
         this.chapterSelected = navParams.data.chapter;
@@ -34,9 +40,13 @@ export class StudentUploadPage {
         this.classSelected = navParams.data.class;
         this.assignments = "upload";
         this.email = navParams.data.email;
+        this.loading = Loading.create({
+            content: 'Fetching Assignments...'
+        });
     }
 
     ionViewWillEnter() {
+        this.nav.present(this.loading);
         var dateOptions = { weekday: 'short', year: '2-digit', month: '2-digit', day: '2-digit' };
         this.dataService.getAssignments(this.student_grade + "_" + this.classSelected, this.chapterSelected).then((assignmentsInfo) => {
             if (assignmentsInfo) {
@@ -48,6 +58,7 @@ export class StudentUploadPage {
                     this.assignment_dict[assignment]["assigned_on"] = "default";
                     this.assignment_dict[assignment]["soft_deadline_due"] = "default";
                     this.assignment_dict[assignment]["hard_deadline_due"] = "default";
+                    this.assignment_dict[assignment]["review_peer_deadline_due"] = "default";
                     this.assignment_dict[assignment]["teacher_reviewed"] = [];
                     this.assignment_dict[assignment]["no_of_assignments_reviewed"] = 0;
                     this.assignment_dict[assignment]["teacher_yet_to_review"] = [];
@@ -66,6 +77,7 @@ export class StudentUploadPage {
                             this.assignment_dict[assign]["formatted_soft_deadline_due"] = new Date(this.assignment_dict[assign]["soft_deadline_due"]).toLocaleDateString('en-US', dateOptions);
                             this.assignment_dict[assign]["hard_deadline_due"] = assignmentDetail_info["hard_deadline_due"];
                             this.assignment_dict[assign]["formatted_hard_deadline_due"] = new Date(this.assignment_dict[assign]["hard_deadline_due"]).toLocaleDateString('en-US', dateOptions);
+                            this.assignment_dict[assign]["review_peer_deadline_due"] = assignmentDetail_info["review_peer_deadline_due"];
                             this.assignment_dict[assign]["teacher_reviewed"] = assignmentDetail_info["teacher_reviewed"];
                             this.assignment_dict[assign]["teacher_yet_to_review"] = assignmentDetail_info["teacher_yet_to_review"];
                             this.assignment_dict[assign]["no_of_assignments_reviewed"] = assignmentDetail_info["teacher_reviewed"].length;
@@ -79,19 +91,19 @@ export class StudentUploadPage {
                             console.log(studentsWhoHaveUploaded);
                             if (studentsWhoHaveUploaded.indexOf(this.email) != -1) {//found : student has already uploaded
                                 this.uploaded_assignments.push(assign);
-                                console.log("uploaded_assignments : " + this.uploaded_assignments);
+                                //console.log("uploaded_assignments : " + this.uploaded_assignments);
                                 let currentDate = new Date();
                                 let hardDeadlineDate = new Date(this.assignment_dict[assign]["hard_deadline_due"]);
                                 if (currentDate <= hardDeadlineDate) {//can resubmit
                                     this.canResubmit_assignments.push(assign);
-                                    console.log("canResubmit_assignments : " + this.canResubmit_assignments);
+                                    //console.log("canResubmit_assignments : " + this.canResubmit_assignments);
                                 } else {//cannot resubmit
                                     this.completed_assignments.push(assign);
-                                    console.log("completed_assignments : " + this.completed_assignments);
+                                    //console.log("completed_assignments : " + this.completed_assignments);
                                 }
                             } else {//not_found: student_yet_to_upload
                                 this.yetToUpload_assignments.push(assign);
-                                console.log("yetToUpload_assignments : " + this.yetToUpload_assignments);
+                                //console.log("yetToUpload_assignments : " + this.yetToUpload_assignments);
                                 let currentDate = new Date();
                                 let softDeadlineDate = new Date(this.assignment_dict[assign]["soft_deadline_due"]);
                                 if (currentDate <= softDeadlineDate) {//safe_submit
@@ -99,23 +111,44 @@ export class StudentUploadPage {
                                 } else {//soft_deadline_expired
                                     this.soft_deadline_expired_assignments.push(assign);
                                 }
-
                             }
+
                         }
                     }).catch(function(exception) {
                         console.log(exception);
                     });
                 }
+                this.loading.dismiss();
             }
         });
     }
 
-    doAlert(assignmentSelected) {
-        let alert = Alert.create({
-            title: 'Description',
-            subTitle: this.assignment_dict[assignmentSelected]["description"],
-            buttons: ['OK']
-        });
-        this.nav.present(alert);
+    uploadAssignment(assignmentTitle, assignmentDesc) {
+        this.nav.push(UploadVideoPage, { 'AssignmentTitle': assignmentTitle,
+                                         'AssignmentDescription': assignmentDesc,
+                                         'student' : this.email,
+                                         'assignmentDetail' : this.assignment_dict[assignmentTitle],
+                                         'uploaded_assignments'     : this.uploaded_assignments,
+                                         'canResubmit_assignments'  : this.canResubmit_assignments,
+                                         'completed_assignments'    : this.completed_assignments,
+                                         'yetToUpload_assignments'  : this.yetToUpload_assignments,
+                                         'soft_deadline_expired_assignments' : this.soft_deadline_expired_assignments,
+                                         'safe_submit_assignments'  : this.safe_submit_assignments,
+                                         'task' : 'upload'
+                                       });
+    }
+
+    openModal(assignmentSelected) {
+        //console.log("openModal for " + assignmentSelected);
+        let modal = Modal.create(AssignDescriptionModalPage,
+            {
+                description: this.assignment_dict[assignmentSelected]["description"],
+                assignment: assignmentSelected,
+                max_response_time: this.assignment_dict[assignmentSelected]["max_response_duration_min"],
+                assigned_on: this.assignment_dict[assignmentSelected]["assigned_on"],
+                edit: false
+            });
+        this.nav.present(modal);
+
     }
 }

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      <ion-row>
+    <ion-title> {{chapter}}
+      <!-- <ion-row>
         <ion-col width-75>
           {{chapter}}
         </ion-col>
@@ -11,45 +11,37 @@
             Add Assignment
           </button>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="chapter-page">
-  <!--<div padding style="text-align: center;">
+  <div padding style="text-align: center;">
      <button center round (click)="addAssignment()">
       <ion-icon name="add-circle"></ion-icon>
       Add Assignment
     </button>
 
-  </div>-->
+  </div>
 
   <ion-card *ngFor="let assignment of assignments">
-    <ion-card-header>
+    <ion-card-header style="white-space: normal;">
     <ion-row>
       <ion-col width-90>
         {{assignment}}
       </ion-col>
       <ion-col width-10>
-        <button outline block small (click)="viewDescription()">
+        <button outline block small (click)="delAssignment(assignment)">
           <ion-icon name="trash"></ion-icon>
         </button>
       </ion-col>
     </ion-row>
     </ion-card-header>
     <ion-card-content>
-      <!--<i>{{assignment_dict[assignment]['description']}}</i>
-      <ion-row>
-      <ion-col><ion-icon name="alarm" item-left></ion-icon>Max Duration</ion-col>
-      <ion-col><ion-badge item-right>{{assignment_dict[assignment]['max_response_duration_min']}} min</ion-badge></ion-col>
-    </ion-row>
-    <ion-row>
-    <ion-col>Assigned On</ion-col>
-    <ion-col><ion-datetime disabled=true displayFormat="DD/MM HH:mm" [(ngModel)]="assignment_dict[assignment]['assigned_on']"></ion-datetime></ion-col>
-  </ion-row>-->
-  <ion-row>
-    <ion-col>
+
+  <ion-row wrap>
+    <ion-col style="padding: 0px;">
       <ion-item>
         <ion-label>Soft Deadline</ion-label>
         <ion-datetime displayFormat="DD/MM HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [min]="minYear" [max]="maxYear"
@@ -58,7 +50,18 @@
       </ion-datetime>
     </ion-item>
   </ion-col>
-  <ion-col>
+
+  <ion-col style="padding: 0px;">
+    <ion-item>
+      <ion-label style="white-space: normal;">Peer Review Deadline</ion-label>
+      <ion-datetime displayFormat="DD/MM HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [min]="minYear" [max]="maxYear"
+      [(ngModel)]="assignment_dict[assignment]['review_peer_deadline_due']"
+      (ionChange)="deadlineUpdate(assignment)">
+    </ion-datetime>
+  </ion-item>
+</ion-col>
+
+  <ion-col style="padding: 0px;">
     <ion-item>
       <ion-label>Hard Deadline</ion-label>
       <ion-datetime displayFormat="DD/MM HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [min]="minYear" [max]="maxYear"
@@ -79,7 +82,7 @@
 </button>
 </div> -->
 <div padding style="text-align: center;">
-  <button outline block small (click)="viewDescription()">
+  <button outline block small (click)="editDescription(assignment)">
     <ion-icon name="document"></ion-icon>Description
   </button>
 </div>

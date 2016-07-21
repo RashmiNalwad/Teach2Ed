@@ -6,12 +6,6 @@ import {Storage, SqlStorage} from 'ionic-angular';
 import * as _ from 'underscore';
 let pouch = require('pouchdb');
 
-/*
-  Generated class for the Data provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class Data {
 
@@ -67,6 +61,15 @@ export class Data {
         });
     }
 
+    getStudentClassChapInfo(username) {
+        return new Promise(resolve => {
+            this.db.get(username).then(function(doc) {
+                resolve(doc);
+            }).catch(function(err) {
+                console.log(err);
+            })
+        });
+    }
     selectClassGrp(classGrp, teacherId) {
         var dbaccess = this;
         return new Promise(resolve => {
@@ -98,6 +101,25 @@ export class Data {
         });
     }
 
+    updateResponse(assignment, student, myresponse) {
+        var dbaccess = this;
+        return new Promise(resolve => {
+            dbaccess.db.get("assignment_" + assignment).then(function(doc) {
+                console.log(doc);
+                doc["responses"][student] = myresponse;
+                let index = doc["teacher_yet_to_review"].indexOf(student);
+                if (index == -1) {
+                    doc["teacher_yet_to_review"].push(student);
+                }
+                console.log(doc);
+                resolve(dbaccess.db.put(doc));
+            }).catch(function(err) {
+                console.log(err);
+                resolve(err);
+            });
+        });
+    }
+
     addClassGrp(classGrp, teacherId) {
         var dbaccess = this;
         return new Promise(resolve => {
@@ -120,11 +142,11 @@ export class Data {
         });
     }
 
-    getClassGrp(classGrp){
-      return new Promise(resolve => {
-          this.db.get(classGrp).then(function(classDoc) {
-              console.log(classDoc);
-              resolve(classDoc);
+    getClassGrp(classGrp) {
+        return new Promise(resolve => {
+            this.db.get(classGrp).then(function(classDoc) {
+                //console.log(classDoc);
+                resolve(classDoc);
             }).catch(function(err) {
                 console.log(err);
                 resolve(err);
@@ -317,7 +339,7 @@ export class Data {
     }
 
     getAssignmentInfo(assignment) {
-        console.log('getAssignmentInfo(' + assignment + ')')
+        //console.log('getAssignmentInfo(' + assignment + ')')
         return new Promise(resolve => {
             this.db.get("assignment_" + assignment).then(function(doc) {
                 resolve(doc);
@@ -327,12 +349,51 @@ export class Data {
         });
     }
 
-    getBasicUserInfo(userId){
-      return new Promise(resolve => {
-          this.db.get(userId).then(function(userDoc) {
-            resolve(userDoc);
-          });
-      });
+    updateAssignmentInfo(assignment, assignmentDesc, maxResponseTime) {
+        var dbaccess = this;
+        return new Promise(resolve => {
+            this.db.get("assignment_" + assignment).then(function(doc) {
+                doc["description"] = assignmentDesc;
+                doc["max_response_duration_min"] = maxResponseTime;
+                resolve(dbaccess.db.put(doc));
+            }).catch(function(err) {
+                console.log(err);
+            })
+        });
+    }
+
+    getQuestions() {
+        return new Promise(resolve => {
+            this.db.get("review_questions").then(function(doc) {
+                console.log(doc);
+                resolve(doc);
+            }).catch(function(err) {
+                console.log(err);
+            })
+        });
+    }
+
+    submitPeerFeedback(assignment, reviewer, peer, feedback) {
+        var dbaccess = this;
+        return new Promise(resolve => {
+            this.db.get("assignment_" + assignment).then(function(assignmentDoc) {
+                console.log(assignmentDoc["responses"][peer]["peers_feedback"][reviewer]);
+                feedback["feedback_submitted"] = true;
+                assignmentDoc["responses"][peer]["peers_feedback"][reviewer] = feedback;
+                console.log(assignmentDoc["responses"][peer]["peers_feedback"][reviewer]);
+                resolve(dbaccess.db.put(assignmentDoc));
+            }).catch(function(err) {
+                console.log(err);
+                resolve(err);
+            });
+        });
+    }
+    getBasicUserInfo(userId) {
+        return new Promise(resolve => {
+            this.db.get(userId).then(function(userDoc) {
+                resolve(userDoc);
+            });
+        });
     }
 
     submitReview(assignment, student_id, teacher_reviewed, teacher_feedback) {
@@ -367,12 +428,13 @@ export class Data {
         });
     }
 
-    deadlineUpdate(assignment, soft_deadline_due, hard_deadline_due) {
+    deadlineUpdate(assignment, soft_deadline_due, review_peer_deadline_due, hard_deadline_due) {
         var dbaccess = this;
         return new Promise(resolve => {
             this.db.get("assignment_" + assignment).then(function(assignmentDoc) {
                 //console.log(assignmentDoc);
                 assignmentDoc["soft_deadline_due"] = soft_deadline_due;
+                assignmentDoc["review_peer_deadline_due"] = review_peer_deadline_due;
                 assignmentDoc["hard_deadline_due"] = hard_deadline_due;
                 //console.log(assignmentDoc);
                 resolve(dbaccess.db.put(assignmentDoc));

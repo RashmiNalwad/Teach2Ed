@@ -29,26 +29,26 @@
     </ion-avatar>
     <!--<h2>{{peer}}</h2>-->
 <div item-right>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']>=1" name="star" [ngStyle]="{'color': '#006400'}"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']>=2" name="star" [ngStyle]="{'color': '#4b0082'}"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']>=3" name="star" [ngStyle]="{'color': '#ff0000'}"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']>=4" name="star" [ngStyle]="{'color': '#0000ff'}"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']>=5" name="star" [ngStyle]="{'color': '#8b4513'}"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']%1!=0" name="star-half" [ngStyle]="{'color': '#000000'}"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']==0" name="star-outline"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']<=1" name="star-outline"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']<=2" name="star-outline"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']<=3" name="star-outline"></ion-icon>
-  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly']<=4" name="star-outline"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']>=1" name="star" [ngStyle]="{'color': '#006400'}"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']>=2" name="star" [ngStyle]="{'color': '#4b0082'}"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']>=3" name="star" [ngStyle]="{'color': '#ff0000'}"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']>=4" name="star" [ngStyle]="{'color': '#0000ff'}"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']>=5" name="star" [ngStyle]="{'color': '#8b4513'}"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']%1!=0" name="star-half" [ngStyle]="{'color': '#000000'}"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']==0" name="star-outline"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']<=1" name="star-outline"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']<=2" name="star-outline"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']<=3" name="star-outline"></ion-icon>
+  <ion-icon *ngIf="myresponse['peers_feedback'][peer]['Where concepts explained clearly ?']<=4" name="star-outline"></ion-icon>
 </div>
 </ion-item>
   <ion-item>
     <ion-label stacked>Did learn anything ?</ion-label>
-    <ion-textarea disabled=true [(ngModel)]="myresponse['peers_feedback'][peer]['Did u learn anything']"></ion-textarea>
+    <ion-textarea disabled=true [(ngModel)]="myresponse['peers_feedback'][peer]['Did you learn anything new ?']"></ion-textarea>
   </ion-item>
   <ion-item>
     <ion-label stacked>Did get confused ?</ion-label>
-    <ion-textarea disabled=true [(ngModel)]="myresponse['peers_feedback'][peer]['Did u get confused']"></ion-textarea>
+    <ion-textarea disabled=true [(ngModel)]="myresponse['peers_feedback'][peer]['Did you get confused ?']"></ion-textarea>
   </ion-item>
 </ion-card>
 </ion-content>

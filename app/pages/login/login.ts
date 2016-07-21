@@ -36,10 +36,10 @@ export class LoginPage {
                     info: result
                 });*/
                 if(result['type'] == "student"){
-                  this.nav.push(WelcomeStudentPage, { info: result });
+                  this.nav.setRoot(WelcomeStudentPage, { info: result });
                 }
                 if(result['type'] == "teacher"){
-                  this.nav.push(WelcomeTeacherPage, { info: result });
+                  this.nav.setRoot(WelcomeTeacherPage, { info: result });
                 }
             } else {
                 let alert = Alert.create({
@@ -48,7 +48,7 @@ export class LoginPage {
                     buttons: [{
                         text: 'OK',
                         handler: () => {
-                            console.log('inside the button click');
+                            //console.log('inside the button click');
                             this.nav.pop();
                         }
                     }]

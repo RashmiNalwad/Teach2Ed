@@ -21,15 +21,15 @@ export class StudentAssignment {
     gender: string;
     fname: string;
     lname: string;
-    imgSrc: string;
+    profileImgSrc: string;
     constructor(private nav:NavController,private dataService:Data, private lib: Lib, private sanitizer: DomSanitizationService) {
       //this.url = sanitizer.bypassSecurityTrustResourceUrl(this.response.attachmentUrl);
     }
 
     getAvatar(){
       switch(this.gender){
-        case "MALE" : this.imgSrc = "images/boy.png"; break;
-        case "FEMALE" : this.imgSrc = "images/girl.png";break;
+        case "MALE" : this.profileImgSrc = "images/boy.png"; break;
+        case "FEMALE" : this.profileImgSrc = "images/girl.png";break;
       }
     }
 

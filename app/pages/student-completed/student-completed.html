@@ -1,5 +1,5 @@
 <ion-card>
-    <ion-card-header>{{assignment}}</ion-card-header>
+    <ion-card-header style="white-space: normal;">{{assignment}}</ion-card-header>
     <ion-card-content>
        <iframe [src]="url" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
        <ion-item>
@@ -42,7 +42,7 @@
           <ion-label stacked>Feedback Comment</ion-label>
           <ion-textarea disabled=true [(ngModel)]="teacherFeedback"></ion-textarea>
         </ion-item> -->
-        <div padding style="text-align: center;">
+        <div style="text-align: center;">
         <ion-item>
            <button outline block small (click)="viewRatings()">
                <ion-icon name="eye"></ion-icon>

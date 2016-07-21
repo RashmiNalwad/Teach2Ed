@@ -8,7 +8,7 @@
   <ion-card>
       <ion-item>
           <ion-avatar item-left>
-            <img src="http://cdn2.iconfinder.com/data/icons/professions/512/student_graduate_boy_profile-512.png">
+            <img [src]="profileImgSrc">
           </ion-avatar>
           <h2>{{userInfo.fname}} {{userInfo.mname}} {{userInfo.lname}}</h2>
           <button item-right center round (click)="logout()">
@@ -42,7 +42,6 @@
     <ion-row wrap><!--responsive-sm-->
       <ion-col center width-50 *ngFor="let className of myClasses">
         <ion-card>
-
         <img [src]="getClassImg(className)"/>
         <ion-card-content>
           {{getClassName(className)}}

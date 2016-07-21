@@ -1,18 +1,22 @@
-<ion-navbar *navbar>
-  <ion-title> Welcome Student </ion-title>
+<ion-header>
+<ion-navbar>
+  <ion-title>Welcome {{userInfo.fname}}</ion-title>
 </ion-navbar>
+</ion-header>
 
-<ion-content padding class="student-home">
-   <div id="top_bar" class="list">
-    <a class="item item-thumbnail-left" href="#">
-      <img src="https://s3.amazonaws.com/sio-cdn/images/footer/icon/icon-twitter-30x30.png">
-      <div id="mydetails">
-        <h2> {{email}} </h2>
-        <p> {{class}}</p>
-      </div>
-      <ion-icon name="settings"></ion-icon>
-    </a>
-   </div>
+<ion-content padding class="student-home card-background-page">
+   <ion-card>
+       <ion-item>
+           <ion-avatar item-left>
+             <img [src]="profileImgSrc">
+           </ion-avatar>
+           <h2>{{userInfo.fname}} {{userInfo.mname}} {{userInfo.lname}}</h2>
+           <h3>{{student_grade}}</h3>
+           <button item-right center round (click)="presentPopover($event)">
+             <ion-icon name="settings"></ion-icon>
+           </button>
+       </ion-item>
+     </ion-card>
 
    <div padding>
       <ion-segment [(ngModel)]="root">
@@ -27,14 +31,10 @@
 
    <div [ngSwitch]="root">
         <ion-item *ngSwitchCase="'courses'">
-             <ion-list>
-                 <button ion-item *ngFor="let item of items" (click)="openChapterDetailsPage(item)">
-                   <ion-avatar item-left>
-                     <img id="avatar" src={{icons_names_map[item]}}>
-                   </ion-avatar>
-                    {{ item }}
-                 </button>
-             </ion-list>
+          <ion-card *ngFor="let item of items" (click)="openChapterDetailsPage(item)">
+                <img [src]="getSubjectImg(item)"/>
+                <h2 style="text-align:center;font-weight:bold;" class="card-title">{{item}}</h2>
+          </ion-card>
         </ion-item>
 
       <ion-list *ngSwitchCase="'feed'">

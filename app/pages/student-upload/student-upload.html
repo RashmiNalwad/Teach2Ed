@@ -30,45 +30,46 @@
          <ion-card-header>{{assignment}}</ion-card-header>
          <ion-card-content>
             <ion-row>
-              <ion-col width-25>
-                <button outline small (click)="doAlert(assignment)">
+              <ion-col width-50>
+                <button outline small (click)="openModal(assignment)">
                   <ion-icon name="eye"></ion-icon>Description
                 </button>
               </ion-col>
               &nbsp;&nbsp;&nbsp;&nbsp;
-             <ion-col width-25>
-                <button outline small>
+             <ion-col width-50>
+                <button outline small (click)="uploadAssignment(assignment,assignment_dict[assignment]['description'])">
                   <ion-icon name="videocam"></ion-icon>Upload
                 </button>
               </ion-col>
-              <ion-col width-50>
+            </ion-row>
                 <button outline small danger>
                   <ion-icon name="warning"></ion-icon>
-                  Soft Deadline Passed:
+                  Deadline Passed:
                   {{assignment_dict[assignment]['formatted_soft_deadline_due']}}
                 </button>
                   <!-- <ion-datetime disabled displayFormat="DD/MM/YYYY HH:mm"
                   [(ngModel)]="assignment_dict[assignment]['soft_deadline_due']"></ion-datetime> -->
-              </ion-col>
-            </ion-row>
+
          </ion-card-content>
      </ion-card>
      <ion-card *ngFor="let assignment of safe_submit_assignments">
          <ion-card-header>{{assignment}}</ion-card-header>
          <ion-card-content>
             <ion-row>
-              <ion-col width-25>
-                <button outline small (click)="doAlert(assignment)">
+              <ion-col width-50>
+                <button outline small (click)="openModal(assignment)">
                   <ion-icon name="eye"></ion-icon>Description
                 </button>
               </ion-col>
               &nbsp;&nbsp;&nbsp;&nbsp;
-             <ion-col width-25>
-                <button outline small>
+             <ion-col width-50>
+                <button outline small (click)="uploadAssignment(assignment,assignment_dict[assignment]['description'])">
                   <ion-icon name="videocam"></ion-icon>Upload
                 </button>
               </ion-col>
-              <ion-col width-50>
+            </ion-row>
+                <ion-row>
+              <ion-col>
                 <button outline small>
                   <ion-icon name="calendar"></ion-icon>
                   Soft Deadline :
@@ -83,46 +84,32 @@
    </ion-item>
 
    <ion-item *ngSwitchCase="'resubmit'">
-     <ion-card *ngFor="let assignment of canResubmit_assignments">
-         <ion-card-header>{{assignment}}</ion-card-header>
-         <ion-card-content>
-            <iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(assignment_dict[assignment]['responses'][email]['attachmentUrl'])" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
-            <ion-row>
-              <ion-col width-25>
-                <button outline small (click)="doAlert(assignment)">
-                  <ion-icon name="eye"></ion-icon>Description
-                </button>
-              </ion-col>
-              &nbsp;&nbsp;&nbsp;
-              <ion-col width-25>
-                 <button outline small>
-                   <ion-icon name="videocam"></ion-icon>Re-Submit
-                 </button>
-               </ion-col>
-              <ion-col width-50>
-                <button outline small danger>
-                  <ion-icon name="calendar"></ion-icon>
-                  Hard Deadline :
-                  {{assignment_dict[assignment]['formatted_hard_deadline_due']}}
-                </button>
-                  <!--<ion-datetime disabled displayFormat="DD/MM HH:mm" [(ngModel)]="assignment_dict[assignment]['hard_deadline_due']"></ion-datetime>-->
-              </ion-col>
-            </ion-row>
-         </ion-card-content>
-     </ion-card>
-   </ion-item>
+     <student-resubmit *ngFor="let assignment of canResubmit_assignments"
+                         [assignment]="assignment"
+                         [email]="email"
+                         [assignmentDetail]="assignment_dict[assignment]"
+                         [canResubmit_assignments]="canResubmit_assignments"
+                         [completed_assignments]="completed_assignments"
+                         [uploaded_assignments]="uploaded_assignments"
+                         [yetToUpload_assignments]="yetToUpload_assignments"
+                         [soft_deadline_expired_assignments]="soft_deadline_expired_assignments"
+                         [safe_submit_assignments]="safe_submit_assignments">
+     </student-resubmit>
+    </ion-item>
 
    <ion-item *ngSwitchCase="'reviewrate'">
      <student-review *ngFor="let assignment of chapter_assignments"
                          [assignment]="assignment"
-                         [email]="email">
+                         [email]="email"
+                         [assignmentDetail]="assignment_dict[assignment]">
      </student-review>
    </ion-item>
 
    <ion-item *ngSwitchCase="'completed'">
      <student-completed *ngFor="let assignment of completed_assignments"
                          [assignment]="assignment"
-                         [email]="email">
+                         [email]="email"
+                         [assignmentDetail]="assignment_dict[assignment]">
      </student-completed>
    </ion-item>
 </div>

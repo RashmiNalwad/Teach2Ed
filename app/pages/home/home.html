@@ -2,46 +2,33 @@
   <ion-navbar>
     <ion-row>
       <ion-col>
-        <ion-avatar item-left>
+        <ion-avatar item-center>
          <img src="images/t2e.jpg">
        </ion-avatar>
-      </ion-col>
-      <ion-col>
-        <ion-title>
-          Welcome
-        </ion-title>
       </ion-col>
     </ion-row>
   </ion-navbar>
 </ion-header>
-<ion-content>
 
 <ion-content class="home">
   <ion-slides pager>
    <ion-slide class="pane1">
-     <h1 [ngStyle]="{'font-style':'italic'}"> Teach2Educate </h1>
+     <h1 [ngStyle]="{'font-style':'Helvetica sans-serif italic'}"> Teach2Educate </h1>
      <ion-row>
        <ion-col>
-          <button primary small (click)="goToLogin()" [ngStyle]="{'color': '#000000'}"> Register </button>
+          <button primary small (click)="goToRegister()" [ngStyle]="{'color': '#000000'}"> Register </button>
        </ion-col>
        <ion-col>
-         <button primary small (click)="goToRegister()" [ngStyle]="{'color': '#000000'}"> Login </button>
+         <button primary small (click)="goToLogin()" [ngStyle]="{'color': '#000000'}"> Login </button>
        </ion-col>
      </ion-row>
    </ion-slide>
  </ion-slides>
-
-    <!-- <ion-label primary stacked>Username</ion-label>
-    <ion-input type="email" [(ngModel)]="name"></ion-input>
-<div padding style="text-align: center;">
-    <button (click)="goTo_TeacherHome(name)">Teacher</button>
-    <button (click)="goTo_StudentHome(name)">Student</button>
-</div> -->
 </ion-content>
 
 <style type="text/css">
 .pane1{
-background:url('images/img2.jpg') no-repeat center center fixed;
+background:url('images/home.jpg') no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         background-size: cover;

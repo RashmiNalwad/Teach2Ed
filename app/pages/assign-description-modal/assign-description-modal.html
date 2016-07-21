@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{assignment}}
+    </ion-title>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        <span primary showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div padding style="text-align: center;">
+    <ion-item>
+      <ion-label>Assigned On</ion-label>
+      <ion-datetime displayFormat="DD/MM HH:mm" disabled [(ngModel)]="assigned_on"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="alarm" item-left></ion-icon>
+      <ion-label>Max Duration</ion-label>
+      <ion-badge *ngIf="!edit" item-right>{{max_response_time}} min</ion-badge>
+      <ion-select *ngIf="edit" [(ngModel)]='max_response_time'>
+        <ion-option value=0>0</ion-option>
+        <ion-option value=1>1</ion-option>
+        <ion-option value=2>2</ion-option>
+        <ion-option value=3>3</ion-option>
+        <ion-option value=4>4</ion-option>
+        <ion-option value=5>5</ion-option>
+        <ion-option value=6>6</ion-option>
+        <ion-option value=7>7</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <textarea class="mytextarea" [disabled]="!edit" [(ngModel)]="assign_description">{{assign_description}}</textarea>
+    </ion-item>
+    <button outline block small *ngIf="edit" (click)="updateAssignment()">
+      <ion-icon name="build"></ion-icon>Update
+    </button>
+</div>
+</ion-content>

@@ -12,42 +12,66 @@ import {StudentDetailReviewPage} from '../students-detail-review/students-detail
 })
 export class StudentReviewPage {
     @Input() assignment: string;
-    @Input() response: {};
     @Input() email: string;
-    @Input() studentGrade: string;
-    @Input() classSelected: string;
-    @Input() chapterSelected: string;
+    @Input() assignmentDetail: any;
 
-    assignment_dict = {};
+    //assignment_dict = {};
     chapter_assignments = [];
     assignment_url: string;
     cumulative_rating;
-    students_to_review = [];
-    student: string;
+    peers_to_review = [];
+    student = 0;
+    questions = [];
+    review_by: string;
+    s1_status: boolean; //status to decide whether to put create icon or done-all icon.
+    s2_status: boolean;
+    s3_status: boolean;
 
     constructor(public nav: NavController, public platform: Platform, public params: NavParams, public viewCtrl: ViewController, private dataService: Data) {
     }
 
     ngOnInit() {
-        this.dataService.getAssignmentInfo(this.assignment).then((assignmentDetail_info) => {
-            if (assignmentDetail_info) {
-                this.assignment_dict[this.assignment] = {};
-                this.assignment_dict[this.assignment]["peer_review_map"] = assignmentDetail_info["peer_review_map"];
-                this.assignment_dict[this.assignment]["responses"] = assignmentDetail_info["responses"];
-                console.log(this.assignment_dict);
-                this.assignment_url = this.assignment_dict[this.assignment]["responses"][this.email]["attachmentUrl"];
-                this.cumulative_rating = this.assignment_dict[this.assignment]["responses"][this.email]["cumulative_rating"];
-                this.students_to_review = this.assignment_dict[this.assignment]["peer_review_mapp"][this.email]["to_review"];
-                console.log(this.assignment_dict[this.assignment]["peer_review_mapp"][this.email]["to_review"]);
-                console.log(this.assignment_dict[this.assignment]["responses"][this.email]["cumulative_rating"]);
-            }
-        }).catch(function(exception) {
-            console.log(exception);
-        });
+        var dateOptions = { weekday: 'short', year: '2-digit', month: '2-digit', day: '2-digit' };
+
+        //console.log(this.assignment);
+        //console.log(this.assignmentDetail);
+        //console.log(this.email);
+        if(this.email in this.assignmentDetail["peer_review_map"])
+          this.peers_to_review = this.assignmentDetail["peer_review_map"][this.email]["to_review"];
+        this.review_by = new Date(this.assignmentDetail["review_peer_deadline_due"]).toLocaleDateString('en-US', dateOptions);
     }
 
-    openModal(studentNum) {
-        let modal = Modal.create(StudentDetailReviewPage, studentNum);
-        this.nav.present(modal);
+    peerSubmitted(peer) {
+        if (peer in this.assignmentDetail['responses'])
+            return true;
+        else
+            return false;
+    }
+
+    peerReviewed(peer) {
+        if (peer in this.assignmentDetail['responses']) {
+            //console.log(this.assignmentDetail['responses'][peer]['peers_feedback'][this.email]['feedback_submitted']);
+            return this.assignmentDetail['responses'][peer]['peers_feedback'][this.email]['feedback_submitted'];
+        }
+        else
+            return false;
+    }
+
+    openModal(peer, peerIndex) {
+        if (peer in this.assignmentDetail['responses']) {
+            let arg = {
+                peer: peer,
+                reviewer: this.email,
+                peerIndex: peerIndex,
+                assignmentUrl: this.assignmentDetail['responses'][peer]['attachmentUrl'],
+                feedback: this.assignmentDetail['responses'][peer]['peers_feedback'][this.email],
+                assignment: this.assignment
+            };
+            console.log(arg);
+            let modal = Modal.create(StudentDetailReviewPage, arg);
+            this.nav.present(modal);
+        } else {
+            console.log("peer hasnt yet submitted response");
+        }
     }
 }

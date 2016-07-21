@@ -1,34 +1,28 @@
 <ion-card>
-   <ion-card-header>{{assignment}}</ion-card-header>
-   <ion-card-content>
-     <a ion-item (click)="openModal({studentNum: 0})">
-       <button primary small>
-         <ion-icon name="person"></ion-icon>
-         <div>Student 1</div>
-       </button>
-       <ion-icon name="create"></ion-icon>
-     </a>
-     <a ion-item (click)="openModal({studentNum: 1})">
-       <button primary small>
-         <ion-icon name="person"></ion-icon>
-         <div>Student 2</div>
-       </button>
-       <ion-icon name="done-all" [ngStyle]="{'color': '#00cc66'}"></ion-icon>
-     </a>
-     <a ion-item (click)="openModal({studentNum: 2})">
-       <button primary small>
-         <ion-icon name="person"></ion-icon>
-         <div>Student 3</div>
-       </button>
-       <ion-icon name="create"></ion-icon>
-     </a>
-   </ion-card-content>
-   <ion-row>
-      <ion-col>
-        <button danger clear small>
-          <ion-icon name="calendar"></ion-icon>
-          <div>Review by: 20th July</div>
+  <ion-card-header style="white-space: normal;">{{assignment}}</ion-card-header>
+  <ion-card-content>
+    <ion-row wrap>
+      <ion-col width-33 *ngFor="let peer of peers_to_review">
+        <ion-avatar item-left>
+          <img src="images/anonymous.png">
+        </ion-avatar>
+        <button outline small (click)="openModal(peer, peers_to_review.indexOf(peer)+1)" [disabled]="!peerSubmitted(peer)">
+          <ion-icon *ngIf="!peerReviewed(peer)" name="create"></ion-icon>
+          <ion-icon *ngIf="peerReviewed(peer)" name="done-all" [ngStyle]="{'color': '#00cc66'}"></ion-icon>
+          <!-- <div *ngIf="!peerReviewed(peer)">Review Student {{peers_to_review.indexOf(peer)+1}}</div>
+          <div *ngIf="peerReviewed(peer)">Reviewed Student {{peers_to_review.indexOf(peer)+1}}</div> -->
         </button>
       </ion-col>
-  </ion-row>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <button outline block danger small>
+          <ion-icon name="calendar"></ion-icon>
+          Review By :
+          {{review_by}}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
 </ion-card>

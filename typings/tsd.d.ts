@@ -21,6 +21,5 @@
 /// <reference path="cordova/plugins/Vibration.d.ts" />
 /// <reference path="cordova/plugins/WebSQL.d.ts" />
 /// <reference path="ionic/ionic.d.ts" />
-/// <reference path="jquery/jquery.d.ts" />
 /// <reference path="requirejs/require.d.ts" />
 /// <reference path="node/node.d.ts" />

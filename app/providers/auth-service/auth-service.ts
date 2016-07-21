@@ -36,11 +36,11 @@ export class AuthService {
         return new Promise(resolve => {
 
             this.db.get('users', { conflicts: true }).then((result) => {
-                console.log(result);
+                //console.log(result);
                 for (var i = 0; i < result.users.length; i++) {
                     this.user = result.users[i];
 
-                    console.log(this.user.userId + " " + this.user.userPassword);
+                    //console.log(this.user.userId + " " + this.user.userPassword);
 
                     if (username == this.user.userId) {
                         //console.log('inside the brycrt logic');
@@ -91,19 +91,20 @@ export class AuthService {
         let flag = false;
         let user = null;
 
+        var obj = this;
 
         //console.log('inside the first time flag' + formData);
         return new Promise(resolve => {
             console.log(DB_NAME);
-            this.db.get(DB_NAME).then((result) => {
+            obj.db.get(DB_NAME).then((result) => {
                 //console.log('inside the db get method');
                 userInfos = result.users;
                 for (var i = 0; i < userInfos.length; i++) {
-                    this.user = userInfos[i];
+                    obj.user = userInfos[i];
                     //console.log(formData.userId + formData.userPassword);
                     //console.log(this.user.userId);
 
-                    if ((this.user != null) && (formData.userId === this.user.userId)) {
+                    if ((obj.user != null) && (formData.userId === obj.user.userId)) {
                         flag = true;
                         break;
                     }
@@ -116,7 +117,7 @@ export class AuthService {
                     //console.log('inside the else block and flag is false'+formData.userId);
                     if (formData.type == "teacher") {
                         let teacherId = "teacher_" + formData.userId;
-                        this.db.put({
+                        obj.db.put({
                             _id: teacherId,
                             first_name: formData.fname,
                             last_name: formData.lname,
@@ -140,7 +141,6 @@ export class AuthService {
                             });
                         }
                         console.log(mySubjects);
-                        var obj = this;
                         obj.db.put({
                             _id: studentId,
                             first_name: formData.fname,
@@ -152,7 +152,7 @@ export class AuthService {
 
                     }
                     userInfos.push(formData);
-                    return this.db.put({ _id: result._id, users: userInfos, _rev: result._rev }).then((doc) => {
+                    return obj.db.put({ _id: result._id, users: userInfos, _rev: result._rev }).then((doc) => {
                         //console.log("inserting into the doc" + doc);
                         firstTime = true;
                         resolve(doc);
@@ -165,14 +165,14 @@ export class AuthService {
             }).catch((err) => {
                 console.log('Inside the catch block');
                 console.log(err);
-                userInfos.push(this.user);
+                userInfos.push(obj.user);
                 let userDoc = {
                     _id: DB_NAME,
                     users: userInfos
                 };
                 console.log(firstTime);
                 if (!firstTime) {
-                    return this.db.put(userDoc).then((result) => {
+                    return obj.db.put(userDoc).then((result) => {
                         console.log('inside the catch block');
                         resolve(result);
                     }).catch((error) => {

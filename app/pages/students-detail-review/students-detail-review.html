@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Student x review
+      Student {{peerIndex}} Review
     </ion-title>
     <ion-buttons start>
       <button (click)="dismiss()">
@@ -13,5 +13,28 @@
 </ion-header>
 
 <ion-content>
-  Heyy there :)
+    <iframe [src]="url" frameborder="0" height="50%" width="100%" allowfullscreen></iframe>
+    <ion-item>
+      <ion-label stacked>Where concepts explained clearly ?</ion-label>
+      <ion-select [disabled]='feedback["feedback_submitted"]' [(ngModel)]='feedback["Where concepts explained clearly ?"]'>
+        <ion-option value=0>0</ion-option>
+        <ion-option value=1>1</ion-option>
+        <ion-option value=2>2</ion-option>
+        <ion-option value=3>3</ion-option>
+        <ion-option value=4>4</ion-option>
+        <ion-option value=5>5</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Did you learn anything new ?</ion-label>
+      <ion-textarea [disabled]='feedback["feedback_submitted"]' [(ngModel)]='feedback["Did you learn anything new ?"]'></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Did you get confused ?</ion-label>
+      <ion-textarea [disabled]='feedback["feedback_submitted"]' [(ngModel)]='feedback["Did you get confused ?"]'></ion-textarea>
+    </ion-item>
+
+    <button *ngIf='!feedback["feedback_submitted"]' style="left: 40%;" small  (click)="submitReview()">Submit</button>
 </ion-content>

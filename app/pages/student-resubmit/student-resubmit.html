@@ -1,0 +1,40 @@
+<ion-card>
+    <ion-card-header style="white-space: normal;">{{assignment}}</ion-card-header>
+    <ion-card-content>
+       <iframe [src]="url" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
+       <ion-row>
+         <ion-col width-50>
+           <button outline small (click)="openModal()">
+             <ion-icon name="eye"></ion-icon>Description
+           </button>
+         </ion-col>
+         &nbsp;&nbsp;&nbsp;
+         <ion-col width-50>
+            <button outline small (click)="resubmitAssignment(assignment,assignmentDetail['description'])">
+              <ion-icon name="videocam"></ion-icon>Re-Submit
+            </button>
+          </ion-col>
+        </ion-row>
+        <div style="text-align: center;">
+          <ion-row>
+           <ion-col>
+             <button outline block small (click)="viewRatings()">
+                 <ion-icon name="eye"></ion-icon>
+                 Ratings Detail
+              </button>
+            </ion-col>
+          </ion-row>
+        <ion-row>
+         <ion-col>
+           <button outline block small danger>
+             <ion-icon name="calendar"></ion-icon>
+             Hard Deadline :
+             {{assignmentDetail['formatted_hard_deadline_due']}}
+           </button>
+             <!--<ion-datetime disabled displayFormat="DD/MM HH:mm" [(ngModel)]="assignment_dict[assignment]['hard_deadline_due']"></ion-datetime>-->
+         </ion-col>
+       </ion-row>
+
+      </div>
+    </ion-card-content>
+</ion-card>

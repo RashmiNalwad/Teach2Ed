@@ -5,27 +5,27 @@
         <ion-col width-75>
           {{classGrp}}
         </ion-col>
-        <ion-col width-25>
+        <!-- <ion-col width-25>
           <button center round (click)="addNewChapter()">
             <ion-icon name="add-circle"></ion-icon>
             Add New Chapter
           </button>
-        </ion-col>
+        </ion-col> -->
       </ion-row>
     </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding class="class-home">
   <div padding style="text-align: center;">
-    <!-- <button center round (click)="addNewChapter()">
+    <button center round (click)="addNewChapter()">
     <ion-icon name="add-circle"></ion-icon>
     Add New Chapter
-  </button> -->
+  </button>
 
   <p>List of Chapters</p>
   <button text-justify outline block *ngFor="let chapter of chapters" (click)="openChapter(chapter)">
     <ion-item>
-      {{chapter}}
+      <ion-label style="white-space: normal;">{{chapter}}</ion-label>
       <ion-badge item-right>{{chapter_assignments[chapter].length}}</ion-badge>
     </ion-item>
   </button>
